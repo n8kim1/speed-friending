@@ -15,30 +15,30 @@ possible_pairings["B2"] = set("A1", "B1")
 
 # pair section 1 with section 2, if possible
 
+# TODO finish changing variable names, datatypes, etc
 # based on https://www.tuorialspoint.com/Maximum-Bipartite-Matching
 # A DFS based recursive function
 # that returns true if a matching 
-# for vertex u is possible
+# for u, in section 1, is possible
 def bpm(self, u, matchR, seen):
-    # Try every job one by one
-    for v in range(self.jobs):
+    # Try every member of section 2 one by one
+    for v in section_2:
 
-        # If applicant u is interested 
-        # in job v and v is not seen
-        if self.graph[u][v] and seen[v] == False:
+        # If u is available to match with 
+        # v and v is not seen
+        if v in possible_pairings[u] and v not in seen:
                 
             # Mark v as visited
-            seen[v] = True 
+            seen.add(v) 
 
-            '''If job 'v' is not assigned to
-                an applicant OR previously assigned 
-                applicant for job v (which is matchR[v]) 
-                has an alternate job available. 
-                Since v is marked as visited in the 
-                above line, matchR[v]  in the following
-                recursive call will not get job 'v' again'''
-            if matchR[v] == -1 or self.bpm(matchR[v], 
-                                            matchR, seen):
+            # If job 'v' is not assigned to
+            # an applicant OR previously assigned 
+            # applicant for job v (which is matchR[v]) 
+            # has an alternate job available. 
+            # Since v is marked as visited in the 
+            # above line, matchR[v]  in the following
+            # recursive call will not get job 'v' again
+            if matchR[v] == -1 or self.bpm(matchR[v], matchR, seen):
                 matchR[v] = u
                 return True
     return False
@@ -57,7 +57,7 @@ def maxBPM(self):
     for i in range(self.ppl):
             
         # Mark all jobs as not seen for next applicant.
-        seen = [False] * self.jobs
+        seen_set = set()
             
         # Find if the applicant 'u' can get a job
         if self.bpm(i, matchR, seen):
