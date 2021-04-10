@@ -5,10 +5,10 @@ section_2 = set(["B1", "B2"])
 
 # Dict representing how much each person has been paired with another
 pair_freqs = dict()
-pair_freqs["A1"] = {"B2": 1}
-pair_freqs["A2"] = {"B2": 1}
-# pair_freqs["B1"] = {"A1": 1}
-pair_freqs["B2"] = {"A1": 1, "A2": 2}
+pair_freqs["A1"] = {"B1": 1, "A2": 0, "B2": 0}
+pair_freqs["A2"] = {"A1": 0, "B1": 0, "B2": 0}
+pair_freqs["B1"] = {"A1": 1, "A2": 0, "B2": 0}
+pair_freqs["B2"] = {"A1": 0, "A2": 0, "B1": 0}
 
 # pair section 1 with section 2, if possible
 # TODO dynamically count this
