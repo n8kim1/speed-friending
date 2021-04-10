@@ -3,23 +3,21 @@
 section_1 = set(["A1", "A2"])
 section_2 = set(["B1", "B2"])
 
-# TODO turn present matches into a better structure
-# Dict of ppl not matched with?
-# As example: A1 paired w B1, A2 w B2, already
-possible_pairings = dict()
-possible_pairings["A1"] = set(["A2", "B2"])
-possible_pairings["A2"] = set(["A1", "B1"]) 
-possible_pairings["B1"] = set(["A2", "B2"]) 
-possible_pairings["B2"] = set(["A1", "B1"]) 
-
+# Dict representing how much each person has been paired with another
+pair_freqs = dict()
+pair_freqs["A1"] = {"B2": 1}
+pair_freqs["A2"] = {"B2": 1}
+# pair_freqs["B1"] = {"A1": 1}
+pair_freqs["B2"] = {"A1": 1, "A2": 2}
 
 # pair section 1 with section 2, if possible
+# TODO dynamically count this
 pairing_counts = dict()
 # (section1, section2)
 pairing_counts["A1"] = (1, 1)
 pairing_counts["A2"] = (1, 1)
-pairing_counts["B1"] = (1, 1)
-pairing_counts["B2"] = (1, 1)
+pairing_counts["B1"] = (2, 1)
+pairing_counts["B2"] = (0, 1)
 
 # prioritize how to assign pairs
 pair_counts_section_1 = dict() # numbers to sets
@@ -33,16 +31,20 @@ for a in section_1:
 
 print(pair_counts_section_1)
 
+paired_this_round = set()
+
 for count in sorted(pair_counts_section_1.keys()):
     print(count)
     # pick a member of section 1, find a viable pair
     for a in pair_counts_section_1[count]:
         a_paired_with = None
-        for b in possible_pairings[a]:
-            if b in section_2:
+        for b in section_2:
+            if (b not in pair_freqs[a] or pair_freqs[a][b]==0) and b not in paired_this_round:
                 a_paired_with = b
                 break
         if b is not None:
+            paired_this_round.add(a)
+            paired_this_round.add(b)
             print(a, b)
 
 
