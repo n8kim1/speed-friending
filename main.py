@@ -14,6 +14,37 @@ possible_pairings["B2"] = set(["A1", "B1"])
 
 
 # pair section 1 with section 2, if possible
+pairing_counts = dict()
+# (section1, section2)
+pairing_counts["A1"] = (1, 1)
+pairing_counts["A2"] = (1, 1)
+pairing_counts["B1"] = (1, 1)
+pairing_counts["B2"] = (1, 1)
+
+# prioritize how to assign pairs
+pair_counts_section_1 = dict() # numbers to sets
+for a in section_1:
+    count = pairing_counts[a][1]
+    if count not in pair_counts_section_1:
+        # cast to tuple, to not split up a into separate els
+        pair_counts_section_1[count] = set((a,))
+    else:
+        pair_counts_section_1[count].add(a)
+
+print(pair_counts_section_1)
+
+for count in sorted(pair_counts_section_1.keys()):
+    print(count)
+    # pick a member of section 1, find a viable pair
+    for a in pair_counts_section_1[count]:
+        a_paired_with = None
+        for b in possible_pairings[a]:
+            if b in section_2:
+                a_paired_with = b
+                break
+        if b is not None:
+            print(a, b)
+
 
 # # TODO finish changing variable names, datatypes, etc
 # # based on https://www.tuorialspoint.com/Maximum-Bipartite-Matching
