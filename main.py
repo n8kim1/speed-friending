@@ -7,10 +7,10 @@ section_2 = set(["B1", "B2"])
 # Dict of ppl not matched with?
 # As example: A1 paired w B1, A2 w B2, already
 possible_pairings = dict()
-possible_pairings["A1"] = set("A2", "B2") 
-possible_pairings["A2"] = set("A1", "B1") 
-possible_pairings["B1"] = set("A2", "B2") 
-possible_pairings["B2"] = set("A1", "B1") 
+possible_pairings["A1"] = set(["A2", "B2"])
+possible_pairings["A2"] = set(["A1", "B1"]) 
+possible_pairings["B1"] = set(["A2", "B2"]) 
+possible_pairings["B2"] = set(["A1", "B1"]) 
 
 
 # pair section 1 with section 2, if possible
