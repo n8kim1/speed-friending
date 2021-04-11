@@ -44,7 +44,7 @@ for count in sorted(pair_counts_section_1.keys(), reverse=True):
             if (b not in pair_freqs[a] or pair_freqs[a][b]==0) and b not in paired_this_round:
                 a_paired_with = b
                 break
-        if b is not None:
+        if a_paired_with is not None:
             paired_this_round.add(a)
             paired_this_round.add(b)
             print(a, b)
