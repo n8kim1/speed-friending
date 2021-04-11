@@ -48,10 +48,8 @@ def add_to_group(a, b):
 # pick a member of section 1, find a viable pair
 for a in pairing_order:
     a_paired_with = None
-    for b in section_2:
-        # TODO just pick the next best person in Group 2, 
-        # don't give up if all ppl a has never matched with don't have partner still
-        if (b not in pair_freqs[a] or pair_freqs[a][b]==0) and viable_to_group(b):
+    for b in sorted(pair_freqs[a].keys(), key=lambda b: pair_freqs[a][b]):
+        if b in section_2 and viable_to_group(b):
             a_paired_with = b
             break
     if a_paired_with is not None:
