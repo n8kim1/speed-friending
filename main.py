@@ -23,33 +23,23 @@ pairing_counts = dict()
 for a in section_1:
     pairing_counts[a] = sum([pair_freqs[a][b] for b in pair_freqs[a] if b in section_2])
 
-# prioritize how to assign pairs
-pair_counts_section_1 = dict() # numbers to sets
-for a in section_1:
-    count = pairing_counts[a]
-    if count not in pair_counts_section_1:
-        # cast to tuple, to not split up a into separate els
-        pair_counts_section_1[count] = set((a,))
-    else:
-        pair_counts_section_1[count].add(a)
-
-print(pair_counts_section_1)
+pairing_order = sorted(pairing_counts.keys(), key=lambda key: pairing_counts[key], reverse=True)
 
 paired_this_round = set()
 
-for count in sorted(pair_counts_section_1.keys(), reverse=True):
-    print(count)
-    # pick a member of section 1, find a viable pair
-    for a in pair_counts_section_1[count]:
-        a_paired_with = None
-        for b in section_2:
-            if (b not in pair_freqs[a] or pair_freqs[a][b]==0) and b not in paired_this_round:
-                a_paired_with = b
-                break
-        if a_paired_with is not None:
-            paired_this_round.add(a)
-            paired_this_round.add(b)
-            print(a, b)
+# pick a member of section 1, find a viable pair
+for a in pairing_order:
+    a_paired_with = None
+    for b in section_2:
+        # TODO just pick the next best person in Group 2, 
+        # don't give up if all ppl a has never matched with don't have partner still
+        if (b not in pair_freqs[a] or pair_freqs[a][b]==0) and b not in paired_this_round:
+            a_paired_with = b
+            break
+    if a_paired_with is not None:
+        paired_this_round.add(a)
+        paired_this_round.add(b)
+        print(a, b)
 
 # TODO handle extra ppl in section A
 # TODO handle extra ppl in section B
