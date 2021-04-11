@@ -1,6 +1,8 @@
 # TODO real test cases
 # TODO parse input
 
+group_size = 3
+
 section_1 = set(["A1", "A2", "A3"])
 section_2 = set(["B1", "B2", "B3"])
 # TODO check if there's intersection, which would indicate something went wrong 
@@ -29,9 +31,19 @@ paired_this_round = []
 
 def viable_to_group(person):
     for group in paired_this_round:
-        if person in group:
+        if person in group and len(group) >= group_size:
             return False
     return True
+
+def add_to_group(a, b):
+    for group in paired_this_round:
+        if a in group:
+            group.add(b)
+            return
+        elif b in group:
+            group.add(a)
+            return
+    paired_this_round.append(set((a, b)))
 
 # pick a member of section 1, find a viable pair
 for a in pairing_order:
@@ -43,8 +55,10 @@ for a in pairing_order:
             a_paired_with = b
             break
     if a_paired_with is not None:
-        paired_this_round.append(set((a, b)))
+        add_to_group(b, a)
         print(a, b)
+
+print(paired_this_round)
 
 # TODO handle extra ppl in section A
 # TODO handle extra ppl in section B
