@@ -35,6 +35,12 @@ def viable_to_group(person):
             return False
     return True
 
+def in_same_group(a, b):
+    for group in paired_this_round:
+        if a in group and b in group:
+            return True
+    return False
+
 # TODO should pair_freqs be updated in the middle of a round?
 def add_to_group(a, b):
     for group in paired_this_round:
@@ -50,7 +56,7 @@ def add_to_group(a, b):
 for a in pairing_order:
     a_paired_with = None
     for b in sorted(pair_freqs[a].keys(), key=lambda b: pair_freqs[a][b]):
-        if b in section_2 and viable_to_group(b):
+        if b in section_2 and viable_to_group(b) and not in_same_group(a, b):
             a_paired_with = b
             break
     if a_paired_with is not None:
