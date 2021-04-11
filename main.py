@@ -20,12 +20,12 @@ pair_freqs["B3"] = {"B1": 0, "B2": 0, "A1": 1, "A2": 0, "A3": 0}
 # pair section 1 with section 2, if possible
 # TODO dynamically count this
 # TODO include downward scaling
-pairing_counts = dict()
+pairing_priority = dict()
 # (section1, section2)
 for a in section_1:
-    pairing_counts[a] = sum([pair_freqs[a][b] for b in pair_freqs[a] if b in section_2])
+    pairing_priority[a] = sum([pair_freqs[a][b] for b in pair_freqs[a] if b in section_2])
 
-pairing_order = sorted(pairing_counts.keys(), key=lambda key: pairing_counts[key], reverse=True)
+pairing_order = sorted(pairing_priority.keys(), key=lambda key: pairing_priority[key], reverse=True)
 
 paired_this_round = []
 
