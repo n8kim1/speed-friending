@@ -25,7 +25,13 @@ for a in section_1:
 
 pairing_order = sorted(pairing_counts.keys(), key=lambda key: pairing_counts[key], reverse=True)
 
-paired_this_round = set()
+paired_this_round = []
+
+def viable_to_group(person):
+    for group in paired_this_round:
+        if person in group:
+            return False
+    return True
 
 # pick a member of section 1, find a viable pair
 for a in pairing_order:
@@ -33,12 +39,11 @@ for a in pairing_order:
     for b in section_2:
         # TODO just pick the next best person in Group 2, 
         # don't give up if all ppl a has never matched with don't have partner still
-        if (b not in pair_freqs[a] or pair_freqs[a][b]==0) and b not in paired_this_round:
+        if (b not in pair_freqs[a] or pair_freqs[a][b]==0) and viable_to_group(b):
             a_paired_with = b
             break
     if a_paired_with is not None:
-        paired_this_round.add(a)
-        paired_this_round.add(b)
+        paired_this_round.append(set((a, b)))
         print(a, b)
 
 # TODO handle extra ppl in section A
