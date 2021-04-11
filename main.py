@@ -1,9 +1,12 @@
+# TODO real test cases
 # TODO parse input
 
 section_1 = set(["A1", "A2"])
 section_2 = set(["B1", "B2"])
+# TODO check if there's intersection, which would indicate something went wrong 
 
 # Dict representing how much each person has been paired with another
+# TODO gen on the fly, from input parsing
 pair_freqs = dict()
 pair_freqs["A1"] = {"B1": 1, "A2": 0, "B2": 0}
 pair_freqs["A2"] = {"A1": 0, "B1": 0, "B2": 0}
@@ -46,6 +49,9 @@ for count in sorted(pair_counts_section_1.keys(), reverse=True):
             paired_this_round.add(b)
             print(a, b)
 
+# TODO handle extra ppl in section A
+# TODO handle extra ppl in section B
+# TODO save to output
 
 # # TODO finish changing variable names, datatypes, etc
 # # based on https://www.tuorialspoint.com/Maximum-Bipartite-Matching
