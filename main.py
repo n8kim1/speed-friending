@@ -11,11 +11,11 @@ section_2 = set(["B1", "B2", "B3"])
 # TODO gen on the fly, from input parsing
 pair_freqs = dict()
 pair_freqs["A1"] = {"B1": 0, "B2": 0, "B3": 1, "A2": 0, "A3": 0}
-pair_freqs["A2"] = {"B1": 1, "B2": 1, "B3": 1, "A1": 0, "A3": 0}
-pair_freqs["A3"] = {"B1": 1, "B2": 1, "B3": 1, "A1": 0, "A2": 0}
-pair_freqs["B1"] = {"B2": 0, "B3": 0, "A1": 0, "A2": 1, "A3": 1}
-pair_freqs["B2"] = {"B1": 0, "B3": 0, "A1": 0, "A2": 1, "A3": 1}
-pair_freqs["B3"] = {"B1": 0, "B2": 0, "A1": 1, "A2": 1, "A3": 1}
+pair_freqs["A2"] = {"B1": 0, "B2": 0, "B3": 0, "A1": 0, "A3": 0}
+pair_freqs["A3"] = {"B1": 0, "B2": 0, "B3": 0, "A1": 0, "A2": 0}
+pair_freqs["B1"] = {"B2": 0, "B3": 0, "A1": 0, "A2": 0, "A3": 0}
+pair_freqs["B2"] = {"B1": 0, "B3": 0, "A1": 0, "A2": 0, "A3": 0}
+pair_freqs["B3"] = {"B1": 0, "B2": 0, "A1": 1, "A2": 0, "A3": 0}
 
 # pair section 1 with section 2, if possible
 # TODO dynamically count this
@@ -35,6 +35,7 @@ def viable_to_group(person):
             return False
     return True
 
+# TODO should pair_freqs be updated in the middle of a round?
 def add_to_group(a, b):
     for group in paired_this_round:
         if a in group:
