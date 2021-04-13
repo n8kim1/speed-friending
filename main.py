@@ -1,6 +1,8 @@
 # TODO real test cases
 # TODO parse input
 
+import random
+
 group_size = 3
 
 section_1 = set(["A1", "A2", "A3"])
@@ -30,7 +32,7 @@ while is_new_pair_created:
     for a in section_1:
         pairing_priority[a] = sum([pair_freqs[a][b] for b in pair_freqs[a] if b in section_2])
 
-    pairing_order = sorted(pairing_priority.keys(), key=lambda key: pairing_priority[key], reverse=True)
+    pairing_order = sorted(pairing_priority.keys(), key=lambda key: ((pairing_priority[key], random.random())), reverse=True)
 
     def viable_to_group(person):
         for group in paired_this_round:
@@ -59,7 +61,7 @@ while is_new_pair_created:
     for a in pairing_order:
         if viable_to_group(a):
             a_paired_with = None
-            for b in sorted(pair_freqs[a].keys(), key=lambda b: pair_freqs[a][b]):
+            for b in sorted(pair_freqs[a].keys(), key=lambda b: (pair_freqs[a][b], random.random())):
                 if b in section_2 and viable_to_group(b) and not in_same_group(a, b):
                     a_paired_with = b
                     break
