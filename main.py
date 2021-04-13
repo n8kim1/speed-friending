@@ -1,23 +1,37 @@
 # TODO real test cases
-# TODO parse input
 
+import csv
 import random
 
 group_size = 3
 
-section_1 = set(["A1", "A2", "A3"])
-section_2 = set(["B1", "B2", "B3"])
-# TODO check if there's intersection, which would indicate something went wrong 
+# TODO take variable file name as cl input
+# note: when processing names, we remove extra whitespace, to be safe
+# caution: will cause "a b" and "ab" to be treated the same, for example
+with open('input_example.csv', newline='') as csvfile:
+    reader = csv.reader(csvfile, delimiter=',')
 
-# Dict representing how much each person has been paired with another
-# TODO gen on the fly, from input parsing
-pair_freqs = dict()
-pair_freqs["A1"] = {"B1": 0, "B2": 0, "B3": 1, "A2": 0, "A3": 0}
-pair_freqs["A2"] = {"B1": 0, "B2": 0, "B3": 0, "A1": 0, "A3": 0}
-pair_freqs["A3"] = {"B1": 0, "B2": 0, "B3": 0, "A1": 0, "A2": 0}
-pair_freqs["B1"] = {"B2": 0, "B3": 0, "A1": 0, "A2": 0, "A3": 0}
-pair_freqs["B2"] = {"B1": 0, "B3": 0, "A1": 0, "A2": 0, "A3": 0}
-pair_freqs["B3"] = {"B1": 0, "B2": 0, "A1": 1, "A2": 0, "A3": 0}
+    row = reader.__next__()
+    section_1 = set(person.strip() for person in row)
+    row = reader.__next__()
+    section_2 = set(person.strip() for person in row)
+
+    # TODO check if there's intersection, which would indicate something went wrong 
+    all_people = section_1 | section_2
+    # Nested symmetric dict, counting how much each person has been paired with another
+    pair_freqs = dict()
+    for i in all_people:
+        pair_freqs[i] = dict()
+        for j in all_people:
+            if i != j:
+                pair_freqs[i][j] = 0
+
+    for row in reader:
+        group = set(person.strip() for person in row)
+        for i in group:
+            for j in group:
+                if i != j:
+                    pair_freqs[i][j] += 1
 
 paired_this_round = []
 
