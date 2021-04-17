@@ -88,7 +88,20 @@ while is_new_pair_created:
                 is_new_pair_created = True
                 break
 
-print(paired_this_round)
+# At this point, there may be ungrouped people
+ungrouped_this_round = [i for i in all_people if not is_in_group(i)]
+
+# **Ungrouped people will be either only in section A, or only in section B**.
+# So, we don't have to bother with bipartitness.
+# (seeing this uses a proof by contradiction argument similar to stable matching;
+# basically, if this wasn't true, a pair of people from A and B
+# would have been attempted to match, and there's no reason they shouldn't have been paired.) 
+
+# Grouping them is somewhat similar as before, though not bipartite:
+# Considering groupings only within ungrouped people,
+# find the most unbalanced, and pair the most unbalanced 
+# according to who they have been least paired with.
+
 
 # TODO handle extra ppl in section A
 # TODO handle extra ppl in section B
