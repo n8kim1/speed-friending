@@ -74,12 +74,17 @@ is_new_pair_created = True
 while is_new_pair_created:
     is_new_pair_created = False
     # pair section 1 with section 2, if possible
-    # TODO dynamically count this
-    # TODO URGENT TODO include downward scaling
+
+    # Figure out the order in which to pick section 1.
+    # Here, we define this order as imbalance in pairing:
+    # roughly, the more a person in section 1 has not been paired with a particular person in section 2, 
+    # and the more they have been paired with others in section 2, the more imbalanced.
+    # They are perfectly balanced if they have met everyone in section 2 an equal number of times.
     pairing_priority = dict()
-    # (section1, section2)
     for a in section_1:
-        pairing_priority[a] = sum([pair_freqs[a][b] for b in pair_freqs[a] if b in section_2])
+        pair_counts_bipartite = [pair_freqs[a][b] for b in pair_freqs[a] if b in section_2]
+        pair_counts_bipartite_shifted = [count-min(pair_counts_bipartite) for count in pair_counts_bipartite]
+        pairing_priority[a] = sum(pair_counts_bipartite_shifted)
 
     pairing_order = sorted(pairing_priority.keys(), key=lambda key: ((pairing_priority[key], random.random())), reverse=True)
 
