@@ -1,6 +1,7 @@
 # TODO real test cases
 
 import csv
+import math
 import random
 
 group_size = 3
@@ -85,8 +86,17 @@ while is_new_pair_created:
     pairing_priority = dict()
     for a in section_1:
         pair_counts_bipartite = [pair_freqs[a][b] for b in pair_freqs[a] if b in section_2]
-        pair_counts_bipartite_shifted = [count-min(pair_counts_bipartite) for count in pair_counts_bipartite]
-        pairing_priority[a] = sum(pair_counts_bipartite_shifted)
+
+        # Without the following: new people in section 1 will have priority zero,
+        # and others will be paired before them. They will stay at priority zero for a while...
+        # While this is fine and generally evens out after a while,
+        # I'd prefer pairing the new people quicker.
+        if sum(pair_counts_bipartite) == 0:
+            # gives new people max priority
+            pairing_priority[a] = math.inf
+        else:
+            pair_counts_bipartite_shifted = [count-min(pair_counts_bipartite) for count in pair_counts_bipartite]
+            pairing_priority[a] = sum(pair_counts_bipartite_shifted)
 
     pairing_order = sorted(pairing_priority.keys(), key=lambda key: ((pairing_priority[key], random.random())), reverse=True)
 
