@@ -4,7 +4,7 @@ import csv
 import math
 import random
 
-group_size = 3
+group_size = 2
 
 # TODO take variable file name as cl input
 # note: when processing names, we remove extra whitespace, to be safe
