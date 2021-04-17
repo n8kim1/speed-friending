@@ -90,7 +90,6 @@ while is_new_pair_created:
                     break
             if a_paired_with is not None:
                 add_to_group(b, a)
-                print(a, b)
                 is_new_pair_created = True
                 break
 
@@ -137,8 +136,16 @@ while is_new_pair_created:
                     break
             if a_paired_with is not None:
                 add_to_group(b, a)
-                print(a, b)
                 is_new_pair_created = True
                 break
 
-# TODO save to output
+# print to stdout, and write to file
+random.shuffle(paired_this_round)
+# TODO use whatever input file name is set too
+# TODO add option to write to a diff file
+with open('input_example.csv', 'a') as output_file:
+    output_file.write("\n")
+    for i in range(len(paired_this_round)):
+        group_printable = ", ".join(paired_this_round[i])
+        print(f"Room {i+1}: {group_printable}")
+        output_file.write("\n" + group_printable)
