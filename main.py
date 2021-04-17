@@ -8,8 +8,11 @@ group_size = 3
 # TODO take variable file name as cl input
 # note: when processing names, we remove extra whitespace, to be safe
 # caution: will cause "a b" and "ab" to be treated the same, for example
+# TODO should be caps insensitive too
 with open('input_example.csv', newline='') as csvfile:
     reader = csv.reader(csvfile, delimiter=',')
+    # TODO strip whitespace in one go, to start
+    # TODO include stripping empty / whitespace-only rows
 
     row = reader.__next__()
     section_1 = set(person.strip() for person in row)
@@ -72,7 +75,7 @@ while is_new_pair_created:
     is_new_pair_created = False
     # pair section 1 with section 2, if possible
     # TODO dynamically count this
-    # TODO include downward scaling
+    # TODO URGENT TODO include downward scaling
     pairing_priority = dict()
     # (section1, section2)
     for a in section_1:
@@ -138,6 +141,8 @@ while is_new_pair_created:
                 add_to_group(b, a)
                 is_new_pair_created = True
                 break
+
+# TODO URGENT TODO handle any stragglers
 
 # print to stdout, and write to file
 random.shuffle(paired_this_round)
