@@ -123,7 +123,7 @@ for i in ungrouped_this_round:
 
 pairing_priority = dict()
 for i in ungrouped_this_round:
-    pairing_priority[i] = sum([pair_freqs[a][b] for b in pair_freqs_ungrouped[a]])
+    pairing_priority[i] = sum([pair_freqs_ungrouped[i][j] for j in pair_freqs_ungrouped[i]])
 
 pairing_order = sorted(pairing_priority.keys(), key=lambda key: ((pairing_priority[key], random.random())), reverse=True)
 
