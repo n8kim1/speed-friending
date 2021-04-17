@@ -36,6 +36,12 @@ with open('input_example.csv', newline='') as csvfile:
 paired_this_round = []
 
 # some helper functions
+def is_in_group(person):
+    for group in paired_this_round:
+        if person in group:
+            return True
+    return False
+
 def viable_to_group(person):
     for group in paired_this_round:
         if person in group and len(group) >= group_size:
@@ -102,7 +108,37 @@ ungrouped_this_round = [i for i in all_people if not is_in_group(i)]
 # find the most unbalanced, and pair the most unbalanced 
 # according to who they have been least paired with.
 
+# TODO there's so much duped work / code / methods / etc
+# Can strip down on repetition
 
-# TODO handle extra ppl in section A
-# TODO handle extra ppl in section B
+# strip down the pair freqs, for convenience
+pair_freqs_ungrouped = dict()
+for i in ungrouped_this_round:
+    pair_freqs_ungrouped[i] = dict()
+    for j in ungrouped_this_round:
+        if i != j:
+            pair_freqs_ungrouped[i][j] = pair_freqs[i][j]
+
+pairing_priority = dict()
+for i in ungrouped_this_round:
+    pairing_priority[i] = sum([pair_freqs[a][b] for b in pair_freqs_ungrouped[a]])
+
+pairing_order = sorted(pairing_priority.keys(), key=lambda key: ((pairing_priority[key], random.random())), reverse=True)
+
+is_new_pair_created = True
+while is_new_pair_created:
+    is_new_pair_created = False
+    for a in pairing_order:
+        if viable_to_group(a):
+            a_paired_with = None
+            for b in sorted(pair_freqs_ungrouped[a].keys(), key=lambda b: (pair_freqs_ungrouped[a][b], random.random())):
+                if viable_to_group(b) and not in_same_group(a, b):
+                    a_paired_with = b
+                    break
+            if a_paired_with is not None:
+                add_to_group(b, a)
+                print(a, b)
+                is_new_pair_created = True
+                break
+
 # TODO save to output
