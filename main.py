@@ -33,7 +33,9 @@ with open('input_example.csv', newline='') as csvfile:
         group = set(person.strip() for person in row)
         for i in group:
             for j in group:
-                if i != j:
+                # Only interested in prior matches between 
+                # people we're looking to pair _this round_.
+                if i != j and i in all_people and j in all_people:
                     pair_freqs[i][j] += 1
 
 paired_this_round = []
