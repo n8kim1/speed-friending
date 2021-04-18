@@ -4,7 +4,13 @@ import csv
 import math
 import random
 
-group_size = 2
+# TODO >2 groups are problematic, esp w alg as written... see other comments for more
+group_size = 4
+# When enabled, will randomize the order in which people in section A are matched.
+# Use sparingly to avoid undesired behavior, eg cycles in pairing
+random_priority = False
+if group_size>2:
+    random_priority=True
 
 # TODO take variable file name as cl input
 # note: when processing names, we remove extra whitespace, to be safe
