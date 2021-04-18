@@ -123,7 +123,9 @@ while is_new_pair_created:
             pairing_priority[a] = sum(pair_counts_bipartite_shifted)
 
     pairing_order = sorted(pairing_priority.keys(), key=lambda key: ((pairing_priority[key], random.random())), reverse=True)
-
+    if random_priority:
+        print("Caution - random prioritization of section 1 on!")
+        pairing_order = sorted(pairing_priority.keys(), key=lambda key: random.random(), reverse=True)
     # pick a member of section 1, find a viable pair
     for a in pairing_order:
         if viable_to_group(a):
