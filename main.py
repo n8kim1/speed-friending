@@ -60,17 +60,41 @@ def in_same_group(a, b):
             return True
     return False
 
+def get_group_size(a):
+    for group in paired_this_round:
+        if a in group:
+            return len(group)
+    return 0
+
 def add_to_group(a, b):
     pair_freqs[a][b] += 1
     pair_freqs[b][a] += 1
-    for group in paired_this_round:
-        if a in group:
-            group.add(b)
-            return
-        elif b in group:
-            group.add(a)
-            return
-    paired_this_round.append(set((a, b)))
+    if is_in_group(a):
+        if is_in_group(b):
+            print("combining....")
+            for group in paired_this_round:
+                if a in group:
+                    a_group = group
+                    paired_this_round.remove(group)
+            for group in paired_this_round:
+                if b in group:
+                    b_group = group
+                    paired_this_round.remove(group)
+            combined_group = a_group|b_group
+            paired_this_round.append(combined_group)
+            
+        else:
+            for group in paired_this_round:
+                if a in group:
+                    group.add(b)
+    else:
+        if is_in_group(b):
+            for group in paired_this_round:
+                if b in group:
+                    group.add(a)
+        else:
+            paired_this_round.append(set((a, b)))
+    return
 
 # main loop of code, iterating and creating pairs
 is_new_pair_created = True
@@ -106,8 +130,9 @@ while is_new_pair_created:
             a_paired_with = None
             for b in sorted(pair_freqs[a].keys(), key=lambda b: (pair_freqs[a][b], random.random())):
                 if b in section_2 and viable_to_group(b) and not in_same_group(a, b):
-                    a_paired_with = b
-                    break
+                    if not (is_in_group(a) and is_in_group(b) and get_group_size(a)+get_group_size(b)>group_size):
+                        a_paired_with = b
+                        break
             if a_paired_with is not None:
                 add_to_group(b, a)
                 is_new_pair_created = True
