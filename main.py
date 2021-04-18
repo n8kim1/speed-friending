@@ -192,7 +192,13 @@ while is_new_pair_created:
                 is_new_pair_created = True
                 break
 
-# TODO URGENT TODO handle any stragglers
+# TODO any people still unpaired (usually when total ppl is 1 mod group_size)
+# are randomly shoved into other groups,
+# there's prob a better way
+ungrouped_this_round = [i for i in all_people if not is_in_group(i)]
+i = random.randint(0, len(paired_this_round))
+for p in ungrouped_this_round:
+    paired_this_round[i].add(p)
 
 # print to stdout, and write to file
 random.shuffle(paired_this_round)
