@@ -1,7 +1,13 @@
 # TODO real test cases
 
+# TODO discuss entire pairing alg in readme/another file
+# (briefly so this doesn't take too much effort)
+# Touch on any undesired behavior that's worked around
+
 import csv
 import math
+# TODO create a option/method to sort deterministically, perhaps by seeding RNG, or always sorting alphabetically
+# (good for debug and replicating)
 import random
 
 # TODO >2 groups are problematic, esp w alg as written... see other comments for more
@@ -20,6 +26,7 @@ with open('input_example.csv', newline='') as csvfile:
     reader = csv.reader(csvfile, delimiter=',')
     # TODO strip whitespace in one go, to start
     # TODO include stripping empty / whitespace-only rows
+    # TODO allow for extra commas, empty names, only space names
 
     row = reader.__next__()
     section_1 = set(person.strip() for person in row)
@@ -103,6 +110,15 @@ def add_to_group(a, b):
     return
 
 # main loop of code, iterating and creating pairs
+# TODO the reprioritization of section 1 ppl in the same round
+# can create not-super-desired results.
+# Eg a section 1 person gets repaired over and over with section 2 ppl,
+# and then others in section 1 are forced to be with each other.
+# (Could balance the ratios of the groups)
+# Or, when there are some low-imbalance section 1 people,
+# others in section 1 never have their imbalance lower:
+# a person with very high imbalance gets repaired
+# Also creates funny behavior in general w >2 group size... maybe thhis is a bad idea
 is_new_pair_created = True
 while is_new_pair_created:
     is_new_pair_created = False
@@ -113,6 +129,12 @@ while is_new_pair_created:
     # roughly, the more a person in section 1 has not been paired with a particular person in section 2, 
     # and the more they have been paired with others in section 2, the more imbalanced.
     # They are perfectly balanced if they have met everyone in section 2 an equal number of times.
+
+    # TODO esp with group size >2, funny things happen:
+    # eg, the same two people get paired twice in a row, in a large group then a 2-size one.
+    # Or groups with two ppl from section 1, and another group with 0 in section 1
+    # Make some tweaks to avoid this
+
     pairing_priority = dict()
     for a in section_1:
         pair_counts_bipartite = [pair_freqs[a][b] for b in pair_freqs[a] if b in section_2]
@@ -130,6 +152,7 @@ while is_new_pair_created:
 
     pairing_order = sorted(pairing_priority.keys(), key=lambda key: ((pairing_priority[key], random.random())), reverse=True)
     if random_priority:
+        # TODO move this print outside a loop, and only print it once, to prevent spam
         print("Caution - random prioritization of section 1 on!")
         pairing_order = sorted(pairing_priority.keys(), key=lambda key: random.random(), reverse=True)
     # pick a member of section 1, find a viable pair
@@ -204,9 +227,19 @@ for p in ungrouped_this_round:
 random.shuffle(paired_this_round)
 # TODO use whatever input file name is set too
 # TODO add option to write to a diff file
+# TODO would be nice to alphabetize these
+# TODO would be nice to put room numbers in preface in file output too, for easy editing. This seems hard tho....
+# would need some commenty-stuff
+# TODO perhaps save to clipboard while printing to stdout
+# TODO press enter to confirm that you like this, or type smth in to reject
+# TODO optionally print metrics (eg how many ppl from each of 1 and 2);
+# this would require printing two things, a copy-paste clean friendly into gc and an ugly one
 with open('input_example.csv', 'a') as output_file:
     output_file.write("\n")
     for i in range(len(paired_this_round)):
         group_printable = ", ".join(paired_this_round[i])
         print(f"Room {i+1}: {group_printable}")
         output_file.write("\n" + group_printable)
+
+# TODO people disconnect sometimes (or other errors), what's proper protocol?
+# Wait a moment, if no one there, come back to main room?
